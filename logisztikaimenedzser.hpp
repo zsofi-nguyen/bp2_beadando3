@@ -5,6 +5,8 @@
 #include "push_button.hpp"
 #include "sudokubox.hpp"
 #include <iostream>
+#include <fstream>
+#include <sstream>
 
 using namespace genv;
 
@@ -14,6 +16,7 @@ const int COL=9;
 class GameMaster{
 private:
     std::vector<std::vector<SudokuBox*>> sudokuTable;
+    std::vector<std::vector<int>> gameData;
     std::vector<Widget*> _widgets;
     event ev;
     int _focusRow=-1;
@@ -23,6 +26,8 @@ private:
 
 public:
     GameMaster();
+    bool readFile(std::string fileName);
+    void createTable();
     void event_loop();
     void addSudokuBox(SudokuBox *sb);
     void addWidget(Widget *w);

@@ -4,9 +4,11 @@
 using namespace genv;
 
 SudokuBox::SudokuBox(int x, int y, int sx, int sy, int number, int maximum, int minimum)
-    :NumberSetBox(x,y,sx,sy,0,0,9)
+    :NumberSetBox(x,y,sx,sy,number,1,9)
 {
     _hibas=false;
+    if(number!=0){_original=true;}
+    else{_original=false;}
 }
 
 void SudokuBox::draw(){
@@ -20,8 +22,12 @@ void SudokuBox::draw(){
     std::stringstream ss;
     if(_min<=_number&&_number<=_max)
         ss << _number;
-    else{ss<<"-";}
-    gout << move_to(_x+_size_x/2-gout.twidth(ss.str())/2, _y+_size_y/2+gout.cdescent()) << color(255,255,255) << text(ss.str());
+    else if(_number==0){ss<<"";}
+    else{ss<<"0";}//=there's a problem
+    if(_original)
+        gout << move_to(_x+_size_x/2-gout.twidth(ss.str())/2, _y+_size_y/2+gout.cdescent()) << color(150,230,255) << text(ss.str());
+    else
+        gout << move_to(_x+_size_x/2-gout.twidth(ss.str())/2, _y+_size_y/2+gout.cdescent()) << color(255,255,255) << text(ss.str());
 }
 
 void SudokuBox::handle(event ev){

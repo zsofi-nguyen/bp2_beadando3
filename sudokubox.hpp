@@ -8,6 +8,7 @@
 class SudokuBox : virtual public NumberSetBox{
 protected:
     bool _hibas;
+    bool _original;
 public:
     SudokuBox(int x, int y, int sx, int sy, int number, int minimum, int maximum);
     virtual void draw();

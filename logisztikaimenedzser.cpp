@@ -1,22 +1,10 @@
 #include "logisztikaimenedzser.hpp"
 
 GameMaster::GameMaster()
-    //:sudokuTable(std::vector<std::vector<SudokuBox*>>(ROW, std::vector<SudokuBox*>(COL, nullptr)))
 {
     gout.open(800,600);
-
-    for(int row=0; row<ROW; row++)
-    {
-        std::vector<SudokuBox*> v;
-        for(int col=0; col<COL; col++)
-        {
-            SudokuBox *sbPtr = new SudokuBox(150+row*45,100+col*45,45,45,0,9,0);
-            sbPtr->draw();
-            v.push_back(sbPtr);
-        }
-        sudokuTable.push_back(v);
-    }
-
+    readFile("game1.txt");
+    createTable();
     /*NumberSetBox *nb = new NumberSetBox(150,30,100,40,0,-100,100);
     _widgets.push_back(nb);
     nb->draw();
@@ -43,6 +31,50 @@ GameMaster::~GameMaster()
         delete _widgets[i];
     }
     std::cout << "vege" << std::endl;
+}
+
+bool GameMaster::readFile(std::string fileName)
+{
+    /*std::ifstream inFile;
+    inFile.open(fileName);
+    if(!inFile.is_open()){
+        std::cout<<"Problem with opening input file"<<std::endl;
+        return false;
+    }
+    else{*/
+    std::stringstream ss;
+    ss<< "0,4,0,0,0,2,0,1,9;0,0,0,3,5,1,0,8,6;3,1,0,0,9,4,7,0,0;0,9,4,0,0,0,0,0,7;0,0,0,0,0,0,0,0,0;2,0,0,0,0,0,8,9,0;0,0,9,5,2,0,0,4,1;4,2,0,1,6,9,0,0,0;1,6,0,8,0,0,0,7,0;";
+        int cellNumber;
+        char notNeeded;
+        for(int row=0;row<ROW;row++)
+        {
+            std::vector<int> onerow;
+            for(int col=0;col<COL;col++)
+            {
+                ss >> cellNumber >> notNeeded;
+                onerow.push_back(cellNumber);
+            }
+            //inFile>>ws;
+            gameData.push_back(onerow);
+        }
+    /*}
+    inFile.close();*/
+    return true;
+}
+
+void GameMaster::createTable()
+{
+    for(int row=0; row<ROW; row++)
+    {
+        std::vector<SudokuBox*> v;
+        for(int col=0; col<COL; col++)
+        {
+            SudokuBox *sbPtr = new SudokuBox(150+col*45,100+row*45,45,45,gameData[row][col],9,0);
+            sbPtr->draw();
+            v.push_back(sbPtr);
+        }
+        sudokuTable.push_back(v);
+    }
 }
 
 void GameMaster::event_loop()
